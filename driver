@@ -1,0 +1,172 @@
+
+class Book:
+  def __init__(self, title, author, genre):
+    self.__title = title
+    self.__author = author
+    self.__genre = genre
+    self.__available = True
+    self.__borrower = None
+
+  def set_title(self, title):
+    self.__title = title
+  def get_title(self):
+    return self.__title
+
+  def set_author(self, author):
+    self.__author = author
+  def get_author(self):
+    return self.__author
+
+  def set_genre(self, genre):
+    self.__genre = genre
+  def get_genre(self):
+    return self.__genre
+
+  def set_availability(self, available):
+    self.__available = available
+  def get_availability(self):
+    return self.__available
+
+  def set_borrower(self, borrower):
+    self.__borrower = borrower
+  def get_borrower(self):
+    return self.__borrower
+
+  def display_info(self):
+     print("Title:", self.__title)
+     print("Author:", self.__author)
+     print("Genre:", self.__genre)
+     if self.__available:
+       print("Available")
+     else:
+       print("Not Available")
+
+
+class LibraryMember:
+  def __init__(self, member_id, name):
+    self.__member_id = member_id
+    self.__name = name
+    self.borrowed_books = []
+
+  def set_member_id(self, member_id):
+    self.__member_id = member_id
+  def get_member_id(self):
+    return self.__member_id
+
+  def set_name(self, name):
+    self.__name = name
+  def get_name(self):
+    return self.__name
+
+  def borrow_book(self, book):
+    if book.get_availability():
+        book.set_availability(False)
+        book.set_borrower(self)
+        self.borrowed_books.append(book)
+        print(self.__name,"has borrowed",book.get_title())
+    else:
+        print("Sorry",self.__name+",",book.get_title(),"is not available for borrowing")
+
+  def return_book(self, book):
+     if book in self.borrowed_books:
+       book.set_availability(True)
+       book.set_borrower(None)
+       print(self.__name,"has returned",book.get_title())
+       self.borrowed_books.remove(book)
+
+  def display_borrowed_books(self):
+   if self.borrowed_books == []:
+       print(self.__name,"doesn't have any borrowed books.")
+       print("--------------------")
+   else:
+     print(self.__name,"has borrowed",len(self.borrowed_books),"book(s):")
+     for book in self.borrowed_books:
+       book.display_info()
+       print("--------------------")
+
+
+class Library:
+  def __init__(self):
+    self.books_available = []
+    self.library_members = []
+
+  def add_book(self, book):
+    self.books_available.append(book)
+
+  def add_library_member(self, member):
+    self.library_members.append(member)
+
+  def display_book_list(self):
+     print("All the books in library are:")
+     for book in self.books_available:
+       book.display_info()
+       if book.get_borrower():
+          print("Borrowed by:", book.get_borrower().get_name())
+          print("--------------------")
+       else:
+          print("The book is not being borrowed by anyone")
+          print("--------------------")
+
+  def display_library_members(self):
+    print("All the library members are:")
+    for member in self.library_members:
+        print(f"{member.get_member_id()} - {member.get_name()}")
+    print("--------------------")
+
+#all books
+book1 = Book("Omniscient Reader's Viewpoint", "Sing_shong", "Psychological")
+book2 = Book("The Novel's Extra", "Jee Gab Song", "Fantasy")
+book3 = Book("Kuma Kuma Kuma Bear", "Kumanano", "Adventure")
+book4 = Book("The Eminence in Shadow", "Daisuke Aizawa", "Comedy")
+book5 = Book("Prisoners of VR", "Dr_Jade", "Sci-fi")
+#all members
+member1 = LibraryMember("CS202300001", "Rahim")
+member2 = LibraryMember("CS202300002", "NOT Rahim")
+member3 = LibraryMember("CS202300003", "Karim")
+member4 = LibraryMember("CS202300004", "NOT Karim")
+#library stuff
+just_a_library = Library()
+just_a_library.add_book(book1)
+just_a_library.add_book(book2)
+just_a_library.add_book(book3)
+just_a_library.add_book(book4)
+just_a_library.add_book(book5)
+#all books
+just_a_library.display_book_list()
+#join
+just_a_library.add_library_member(member1)
+just_a_library.add_library_member(member2)
+just_a_library.add_library_member(member3)
+just_a_library.add_library_member(member4)
+#all library members
+print("1======================================")
+just_a_library.display_library_members()
+#library members borrow books
+member1.borrow_book(book1)
+member1.borrow_book(book2)
+print("--------------------")
+member2.borrow_book(book4)
+print("--------------------")
+member3.borrow_book(book1)
+member3.borrow_book(book3)
+print("--------------------")
+member4.borrow_book(book4)
+member4.borrow_book(book5)
+print("2======================================")
+#members
+member1.display_borrowed_books()
+member2.display_borrowed_books()
+print("3======================================")
+#book Returning
+member1.return_book(book2)
+print("--------------------")
+member2.return_book(book4)
+print("--------------------")
+member3.borrow_book(book4)
+print("4======================================")
+member1.display_borrowed_books()
+member2.display_borrowed_books()
+member3.display_borrowed_books()
+member4.display_borrowed_books()
+print("5======================================")
+just_a_library.display_book_list()
