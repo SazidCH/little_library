@@ -1,0 +1,71 @@
+#TAsk
+class Movie:
+  def __init__(self, name = None, genre = None, duration = 0) :
+    self.name = name
+    self.genre = genre
+    self.duration = int(duration)
+
+  @classmethod
+  def createMovie_fromString(cls, movie_string):
+    name, genre, duration = movie_string.split("-")
+    new_movie = Movie(name, genre, duration)
+    return new_movie
+
+  def movieInfo(self):
+    return f"Movie Name: {self.name}\nMovie Genre: {self.genre}\nMovie Duration: {self.duration} minutes."
+
+class StarCinema:
+  all_branch_info = {}
+  def __init__(self, branch_name = None):
+    self.branch_name = branch_name
+    self.movie_list = []
+    StarCinema.all_branch_info[self.branch_name] = self.movie_list
+    print(f"Welcome to {self.branch_name} branch of StarCinema!")
+
+  def addMovies(self, *movie_objects):
+    for movie in movie_objects:
+      if movie not in self.movie_list:
+        self.movie_list.append(movie)
+        print(f"{movie.name} added to {self.branch_name} branch.")
+      else:
+        print(f"Movie is already added in {self.branch_name} branch.")
+
+  def removeMovie(self, remove_movie):
+    if remove_movie in self.movie_list:
+      self.movie_list.remove(remove_movie)
+
+  @classmethod
+  def check(cls, movie_name):
+    available = False
+    for branch, movies in StarCinema.all_branch_info.items():
+      for movie in movies:
+        if movie.name == movie_name:
+          print(f"{movie.name} is being streamed in {branch} branch.")
+          available = True
+          break
+    if available == False:
+      print(f"{movie_name} is not being streamed in any branch.")
+
+    streaming = False
+    for branch, movies in StarCinema.all_branch_info.items():
+      for movie in StarCinema.all_branch_info[branch]:
+        if movie.name == movie_name:
+          movie_genre = movie.genre
+          movie_duration = movie.duration
+          streaming = True
+          break
+    if streaming == True and movie_genre != None and movie_duration != None:
+      print(f"It is of {movie_genre} genre and {movie_duration} minutes duration.")
+
+  @classmethod
+  def showAllBranchInfo(cls):
+    for branch, movies in StarCinema.all_branch_info.items() :
+      print("-----------------")
+      print(f"Branch Name: {branch}")
+      print("-----------------")
+      count = 1
+      for movie in (StarCinema.all_branch_info[branch]) :
+        print(f"Movie No: {count}\nMovie Name: {movie.name}\nMovie Genre: {movie.genre}\nMovie Duration: {movie.duration} minutes.")
+        print("**************************")
+        count += 1
+     
