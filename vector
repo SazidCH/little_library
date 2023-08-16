@@ -1,0 +1,67 @@
+class TwoDVector:
+    def __init__(self, x, y): 
+        self.__x = x
+        self.__y = y
+
+    def add2DVectors(self, *vectors):
+        for i in vectors:
+            self.__x += i.__x
+            self.__y += i.__y
+
+    def print2DVector(self):
+        if self.__y >= 0:
+            y = "+ " + str(self.__y)    
+        else:
+            y = str(self.__y)
+        print(f"{self.__x}i {y}j")
+
+
+class ThreeDVector(TwoDVector):
+    def __init__(self, x, y, z):
+        super().__init__(x, y)
+        self.__z = z
+
+    def add3DVectors(self, *vectors):
+        self.add2DVectors(*vectors)
+        for i in vectors:
+            self.__z += i.__z
+
+    def multiplyScalar(self, scalar):
+        self._TwoDVector__x *= scalar
+        self._TwoDVector__y *= scalar
+        self.__z *= scalar
+
+    def calculateLength(self):
+        return (self._TwoDVector__x ** 2 + self._TwoDVector__y ** 2 + self.__z ** 2) ** 0.5
+
+    def print3DVector(self):
+        if self._TwoDVector__y >= 0:
+            y = "+ " + str(self._TwoDVector__y)    
+        else:
+            y = str(self._TwoDVector__y)
+        if self.__z >= 0:
+            z = "+ " + str(self.__z)
+        else:
+            z = str(self.__z)
+        print(f"{self._TwoDVector__x}i {y}j {z}k")
+
+
+
+TwoDV1 = TwoDVector(5, 6)
+TwoDV2 = TwoDVector(3, 7)
+TwoDV3 = TwoDVector(1, 8)
+print("===============")
+TwoDV1.add2DVectors(TwoDV2, TwoDV3)
+TwoDV1.print2DVector()
+print("===============")
+ThreeDV1 = ThreeDVector(5, 6, 1)
+ThreeDV2 = ThreeDVector(1, 9, -7)
+ThreeDV3 = ThreeDVector(8, 2, 4)
+print("===============")
+ThreeDV1.add3DVectors(ThreeDV2,ThreeDV3)
+ThreeDV1.print3DVector()
+print("===============")
+ThreeDV1.multiplyScalar(3)
+ThreeDV1.print3DVector()
+print("===============")
+print(ThreeDV1.calculateLength())
